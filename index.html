@@ -113,6 +113,13 @@
     .btn.ghost{
       background: #ffffff70;
     }
+    /* ✅ Nút trang đang xem (màu xanh) */
+.btn.navActive{
+  background: linear-gradient(135deg, #4aa3ff, #6a7bff);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 14px 28px rgba(106,123,255,.25);
+}
 
     /* Card */
     .card{
@@ -240,7 +247,7 @@
 
     .seal{
       position:absolute;
-      left:50%; top:56%;
+      left:50%; top:70%;
       transform: translate(-50%,-50%);
       width: 54px; height:54px;
       border-radius: 50%;
@@ -670,11 +677,11 @@
           <div class="tiny">Thư mời kỉ yếu</div>
         </div>
         <div class="navBtns">
-          <button class="btn ghost" onclick="go(1)">Trang 1</button>
-          <button class="btn ghost" onclick="go(2)">Trang 2</button>
-          <button class="btn ghost" onclick="go(3)">Trang 3</button>
-          <button class="btn ghost" onclick="go(4)">Trang 4</button>
-        </div>
+  <button class="btn ghost navBtn navActive" data-page="1" onclick="go(1)">Trang 1</button>
+  <button class="btn ghost navBtn" data-page="2" onclick="go(2)">Trang 2</button>
+  <button class="btn ghost navBtn" data-page="3" onclick="go(3)">Trang 3</button>
+  <button class="btn ghost navBtn" data-page="4" onclick="go(4)">Trang 4</button>
+</div>
       </div>
 
       <!-- PAGE 1 -->
@@ -930,12 +937,18 @@
   <script>
     // Simple SPA navigation
     function go(n){
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page'+n).classList.add('active');
+  // show page
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
 
-      // small polish: scroll top when switch page
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  // ✅ update nav active button
+  document.querySelectorAll('.navBtn').forEach(b => b.classList.remove('navActive'));
+  const activeBtn = document.querySelector(`.navBtn[data-page="${n}"]`);
+  if (activeBtn) activeBtn.classList.add('navActive');
+
+  // scroll top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
     function toggleEnvelope(id){
       const el = document.getElementById(id);
