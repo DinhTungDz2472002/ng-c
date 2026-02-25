@@ -114,12 +114,12 @@
       background: #ffffff70;
     }
     /* ✅ Nút trang đang xem (màu xanh) */
-.btn.navActive{
-  background: linear-gradient(135deg, #4aa3ff, #6a7bff);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 14px 28px rgba(106,123,255,.25);
-}
+    .btn.navActive{
+      background: linear-gradient(135deg, #4aa3ff, #6a7bff);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 14px 28px rgba(106,123,255,.25);
+    }
 
     /* Card */
     .card{
@@ -265,64 +265,19 @@
     }
 
     .envTitle{
-  position:absolute;
-  left:50%;
-  top: 18%;
-  transform: translateX(-50%);
-  z-index: 2;              /* ✅ hạ z-index xuống dưới tờ thư */
-  text-align:center;
-  width: 90%;
-  pointer-events:none;
-  transition: opacity .35s ease, transform .35s ease;
-}
-/* ✅ Khi mở thư: ẩn chữ tên lớn để không đè lên nội dung */
-.open .envTitle{
-  opacity: 0;
-  transform: translateX(-50%) translateY(-8px);
-}
-/* Mặc định: thư ở dưới (chưa lộ rõ) */
-.letter{
-  opacity: 0;
-  pointer-events: none;
-  transition: all .6s ease;
-}
-
-/* Khi mở thư */
-.open .letter{
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(-6%);
-}
-
-/* Ẩn chữ Khánh Ngọc khi mở */
-.open .envTitle{
-  opacity: 0;
-  transition: opacity .3s ease;
-}
-
-/* Ẩn con dấu khi mở */
-.open .seal{
-  opacity: 0;
-  transform: translate(-50%,-50%) scale(.8);
-  transition: all .3s ease;
-}
-/* ✅ đảm bảo tờ thư luôn nằm trên */
-.letter{
-  z-index: 5;
-  padding-top: 18px; /* thêm chút khoảng trống cho thoáng */
-}
-    .envTitle .name{
-      font-family:"Great Vibes", cursive;
-      font-size: 44px;
-      line-height:1;
-      color:#2b2230;
-      text-shadow: 0 10px 22px rgba(20,24,40,.10);
+      position:absolute;
+      left:50%;
+      top: 18%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align:center;
+      width: 90%;
+      pointer-events:none;
+      transition: opacity .35s ease, transform .35s ease;
     }
-    .envTitle .small{
-      margin-top: 6px;
-      font-size: 12px;
-      font-weight:700;
-      color: var(--muted);
+    .open .envTitle{
+      opacity: 0;
+      transform: translateX(-50%) translateY(-8px);
     }
 
     /* Letter slides up when open */
@@ -341,6 +296,35 @@
       padding: 14px 14px 12px;
       transition: transform .7s cubic-bezier(.2,.9,.15,1);
       overflow:hidden;
+
+      /* mặc định ẩn khi chưa mở */
+      opacity: 0;
+      pointer-events: none;
+    }
+    .open .letter{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-6%);
+    }
+    .open .seal{
+      opacity: 0;
+      transform: translate(-50%,-50%) scale(.8);
+      transition: all .3s ease;
+    }
+    .open .flap{ transform: rotateX(-165deg); }
+
+    .envTitle .name{
+      font-family:"Great Vibes", cursive;
+      font-size: 44px;
+      line-height:1;
+      color:#2b2230;
+      text-shadow: 0 10px 22px rgba(20,24,40,.10);
+    }
+    .envTitle .small{
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight:700;
+      color: var(--muted);
     }
 
     .letterTop{
@@ -368,9 +352,6 @@
       line-height: 1.55;
       color:#2a2f3c;
     }
-
-    .open .flap{ transform: rotateX(-165deg); }
-    .open .letter{ transform: translateX(-50%) translateY(-6%); }
 
     /* PAGE 2 invitation */
     .inviteGrid{
@@ -612,49 +593,13 @@
     .rowBtns{
       display:flex; gap:10px; flex-wrap:wrap;
       margin-top: 6px;
-    }#env4 .letter{
-  height: 88%;     /* tăng từ 78% lên 88% */
-  padding-bottom: 24px;
-}
-
-    .wishList{
-      margin-top: 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .wishItem{
-      padding: 12px;
-      border-radius: 18px;
-      background: #ffffffb8;
-      border: 1px solid #ffffff80;
-      box-shadow: 0 10px 22px rgba(20,24,40,.07);
-    }
-    .wishItem .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:6px;
-    }
-    .wishItem .who{
-      font-weight: 900;
-      font-size: 13px;
-    }
-    .wishItem .when{
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .wishItem .msg{
-      font-size: 13px;
-      line-height: 1.5;
-      color:#2a2f3c;
-      white-space:pre-wrap;
     }
 
     /* PAGE 4 */
+    #env4 .letter{
+      height: 88%;
+      padding-bottom: 24px;
+    }
     .finalNote{
       margin-top: 12px;
       font-size: 13px;
@@ -670,18 +615,18 @@
   <div class="app">
     <div class="phone">
 
-      <!-- TOPBAR (always visible per page via reuse) -->
+      <!-- TOPBAR -->
       <div class="topbar">
         <div class="brand">
           <div class="sig">Khánh Ngọc</div>
           <div class="tiny">Thư mời kỉ yếu</div>
         </div>
         <div class="navBtns">
-  <button class="btn ghost navBtn navActive" data-page="1" onclick="go(1)">Trang 1</button>
-  <button class="btn ghost navBtn" data-page="2" onclick="go(2)">Trang 2</button>
-  <button class="btn ghost navBtn" data-page="3" onclick="go(3)">Trang 3</button>
-  <button class="btn ghost navBtn" data-page="4" onclick="go(4)">Trang 4</button>
-</div>
+          <button class="btn ghost navBtn navActive" data-page="1" onclick="go(1)">Trang 1</button>
+          <button class="btn ghost navBtn" data-page="2" onclick="go(2)">Trang 2</button>
+          <button class="btn ghost navBtn" data-page="3" onclick="go(3)">Trang 3</button>
+          <button class="btn ghost navBtn" data-page="4" onclick="go(4)">Trang 4</button>
+        </div>
       </div>
 
       <!-- PAGE 1 -->
@@ -768,18 +713,17 @@
             </div>
 
             <div class="photos">
-              <!-- 3 ảnh bên phải: dùng link http để bạn thay sau -->
               <div class="photo">
                 <div class="tag">Ảnh 1</div>
-                <img src="./ngoc1.jpg" alt="Ảnh 1 (thay link sau)" />
+                <img src="./ngoc1.jpg" alt="Ảnh 1" />
               </div>
               <div class="photo">
                 <div class="tag">Ảnh 2</div>
-                <img src="./ngoc2.jpg" alt="Ảnh 2 (thay link sau)" />
+                <img src="./ngoc2.jpg" alt="Ảnh 2" />
               </div>
               <div class="photo">
                 <div class="tag">Ảnh 3</div>
-                <img src="./ngoc3.jpg" alt="Ảnh 3 (thay link sau)" />
+                <img src="./ngoc3.jpg" alt="Ảnh 3" />
               </div>
             </div>
           </div>
@@ -805,10 +749,8 @@
                   <span>Tháng 3 / 2026</span>
                 </div>
                 <div class="calGrid" aria-label="calendar">
-                  <!-- DOW -->
                   <div class="dow">T2</div><div class="dow">T3</div><div class="dow">T4</div><div class="dow">T5</div><div class="dow">T6</div><div class="dow">T7</div><div class="dow">CN</div>
 
-                  <!-- March 2026 starts on Sunday => show 6 muted days then 1 on CN -->
                   <div class="day muted">24</div>
                   <div class="day muted">25</div>
                   <div class="day muted">26</div>
@@ -817,7 +759,6 @@
                   <div class="day muted">29</div>
                   <div class="day muted">30</div>
 
-                  <!-- Row containing 1st -->
                   <div class="day muted">31</div>
                   <div class="day">1</div>
                   <div class="day">2</div>
@@ -825,14 +766,9 @@
                   <div class="day">4</div>
                   <div class="day">5</div>
                   <div class="day">6</div>
-
-                  <!-- Row highlight day 1/3/2026: BUT note: user wants 1/3/2026 => March 1, 2026. -->
-                  <!-- We will circle day 1; move highlight onto day "1" above by adding highlight class via JS -->
                 </div>
 
-                <div style="margin-top:10px; font-size:12px; color:var(--muted); font-weight:800;">
-                  
-                </div>
+                <div style="margin-top:10px; font-size:12px; color:var(--muted); font-weight:800;"></div>
               </div>
             </div>
           </div>
@@ -861,11 +797,13 @@
               <div class="rowBtns">
                 <button type="submit" class="btn primary">Gửi lời chúc</button>
                 <button type="button" class="btn" onclick="go(2)">Quay lại thư mời</button>
-                <button type="button" class="btn ghost" onclick="clearWishes()">Xoá tất cả (trên máy)</button>
+                <button type="button" class="btn ghost" onclick="document.getElementById('fromName').value=''; document.getElementById('message').value='';">
+                  Xoá nội dung đang nhập
+                </button>
               </div>
             </form>
 
-            <div class="wishList" id="wishList" aria-live="polite"></div>
+            <!-- Không hiển thị danh sách lời chúc (chỉ lưu vào Google Sheet) -->
           </div>
         </div>
         <div class="footerSpace"></div>
@@ -937,18 +875,15 @@
   <script>
     // Simple SPA navigation
     function go(n){
-  // show page
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page'+n).classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page'+n).classList.add('active');
 
-  // ✅ update nav active button
-  document.querySelectorAll('.navBtn').forEach(b => b.classList.remove('navActive'));
-  const activeBtn = document.querySelector(`.navBtn[data-page="${n}"]`);
-  if (activeBtn) activeBtn.classList.add('navActive');
+      document.querySelectorAll('.navBtn').forEach(b => b.classList.remove('navActive'));
+      const activeBtn = document.querySelector(`.navBtn[data-page="${n}"]`);
+      if (activeBtn) activeBtn.classList.add('navActive');
 
-  // scroll top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     function toggleEnvelope(id){
       const el = document.getElementById(id);
@@ -956,7 +891,6 @@
     }
 
     function openEnvelopeThen(page){
-      // Open envelope on page 1, then navigate after a short delay
       const env = document.getElementById('env1');
       env.classList.add('open');
       setTimeout(() => go(page), 520);
@@ -964,7 +898,6 @@
 
     // Highlight the correct date in calendar (01/03/2026 => March 1, 2026)
     (function markCalendar(){
-      // Find the "day" elements in page2 calendar and highlight the one with text "1" that is NOT muted.
       const page2 = document.getElementById('page2');
       const days = page2.querySelectorAll('.calendar .day');
       for (const d of days){
@@ -975,92 +908,44 @@
       }
     })();
 
-    // Wishes storage (localStorage)
-    const KEY = 'khanhngoc_wishes_v1';
+    /***********************
+     * GỬI LỜI CHÚC LÊN GOOGLE SHEET
+     ***********************/
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxo-ThLDXhwiU-tTxzj5CUP07haSVQWj5NhP7fdCNvQP85Oh1xwhYuORF0GRcDKYYvAnA/exec";
 
-    function loadWishes(){
-      try{
-        return JSON.parse(localStorage.getItem(KEY) || '[]');
-      }catch(e){
-        return [];
-      }
-    }
-    function saveWishes(items){
-      localStorage.setItem(KEY, JSON.stringify(items));
-    }
-
-    function renderWishes(){
-      const list = document.getElementById('wishList');
-      const items = loadWishes();
-
-      if (!items.length){
-        list.innerHTML = `
-          <div class="wishItem">
-            <div class="top">
-              <div class="who">Chưa có lời chúc nào</div>
-              <div class="when">💬</div>
-            </div>
-            <div class="msg">Hãy là người đầu tiên gửi lời chúc nha!</div>
-          </div>
-        `;
-        return;
-      }
-
-      list.innerHTML = items.slice().reverse().map(w => `
-        <div class="wishItem">
-          <div class="top">
-            <div class="who">${escapeHtml(w.from)}</div>
-            <div class="when">${escapeHtml(w.time)}</div>
-          </div>
-          <div class="msg">${escapeHtml(w.msg)}</div>
-        </div>
-      `).join('');
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#039;");
-    }
-
-    document.getElementById('wishForm').addEventListener('submit', (e) => {
+    document.getElementById('wishForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const from = document.getElementById('fromName').value.trim();
-      const msg = document.getElementById('message').value.trim();
-      if (!from || !msg) return;
 
-      const now = new Date();
-      const time = now.toLocaleString('vi-VN', { hour12:false });
+      const ten = document.getElementById('fromName').value.trim();
+      const loiChuc = document.getElementById('message').value.trim();
+      if (!ten || !loiChuc) return;
 
-      const items = loadWishes();
-      items.push({ from, msg, time });
-      saveWishes(items);
+      const btn = e.target.querySelector('button[type="submit"]');
+      const oldText = btn.textContent;
 
-      document.getElementById('message').value = '';
-      renderWishes();
+      btn.disabled = true;
+      btn.textContent = "Đang gửi...";
 
-      // tiny feedback
-      alert('Đã gửi lời chúc rồi nè 💌');
-    });
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ ten, loiChuc })
+        });
 
-    function clearWishes(){
-      if (confirm('Xoá hết lời chúc đang lưu trên thiết bị này?')){
-        localStorage.removeItem(KEY);
-        renderWishes();
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "Gửi thất bại");
+
+        document.getElementById('message').value = "";
+        alert("Đã gửi lời chúc 💌");
+
+      } catch (err) {
+        alert("Lỗi gửi lời chúc: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = oldText;
       }
-    }
-
-    // initial render
-    renderWishes();
+    });
   </script>
 </body>
 </html>
-
-<!-- http://placekitten.com/800/550
-
-http://placekitten.com/801/550
-
-http://placekitten.com/802/550 -->
