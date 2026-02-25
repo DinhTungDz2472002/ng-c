@@ -608,11 +608,97 @@
     }
 
     .footerSpace{height: 8px}
+
+    /* 🎉 Confetti canvas overlay */
+    #fxCanvas{
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ✅ Success modal */
+    .modalOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 18px;
+    }
+    .modalOverlay.show{ display:flex; }
+
+    .modalBox{
+      width: min(420px, 100%);
+      border-radius: 22px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 22px 70px rgba(20,24,40,.25);
+      overflow: hidden;
+      animation: pop .18s ease both;
+    }
+    @keyframes pop{
+      from{ transform: scale(.96); opacity: 0; }
+      to{ transform: scale(1); opacity: 1; }
+    }
+    .modalTop{
+      padding: 16px 16px 10px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .modalIcon{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, #4aa3ff, #6a7bff);
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 14px 26px rgba(106,123,255,.25);
+    }
+    .modalTitle{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+    }
+    .modalDesc{
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-weight: 600;
+    }
+    .modalActions{
+      padding: 0 16px 16px;
+      display:flex;
+      gap: 10px;
+      justify-content:flex-end;
+      flex-wrap: wrap;
+    }
   </style>
+
+  <!-- 🎉 Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
   <div class="app">
+    <!-- 🎵 Background music -->
+    <audio id="bgm" preload="auto" loop>
+      <source src="./music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <button id="musicBtn" class="btn ghost"
+      style="position:fixed; right:14px; bottom:14px; z-index:9999;">
+      🔇 Nhạc
+    </button>
+
     <div class="phone">
 
       <!-- TOPBAR -->
@@ -870,6 +956,25 @@
       </section>
 
     </div>
+
+    <canvas id="fxCanvas"></canvas>
+
+    <!-- ✅ Success Modal -->
+    <div id="successModal" class="modalOverlay" role="dialog" aria-modal="true">
+      <div class="modalBox">
+        <div class="modalTop">
+          <div class="modalIcon">✓</div>
+          <div>
+            <h3 class="modalTitle">Gửi lời chúc thành công 💌</h3>
+            <p class="modalDesc">Cảm ơn bạn nha! Lời chúc đã được lưu lại rồi ✨</p>
+          </div>
+        </div>
+        <div class="modalActions">
+          <button class="btn ghost" id="closeModalBtn">Đóng</button>
+          <button class="btn primary" id="writeMoreBtn">Viết thêm</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -936,8 +1041,11 @@
         const data = await res.json();
         if (!data.ok) throw new Error(data.error || "Gửi thất bại");
 
+        // ✅ thành công
         document.getElementById('message').value = "";
-        alert("Đã gửi lời chúc 💌");
+        fireworksDown2sBig();
+        openSuccessModal();
+        setTimeout(closeSuccessModal, 6000);
 
       } catch (err) {
         alert("Lỗi gửi lời chúc: " + err.message);
@@ -946,6 +1054,123 @@
         btn.textContent = oldText;
       }
     });
+
+    /***********************
+     * 🎵 MUSIC AUTOPLAY (with fallback)
+     ***********************/
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('musicBtn');
+    let musicOn = false;
+
+    async function tryPlayMusic() {
+      try {
+        await bgm.play();
+        musicOn = true;
+        musicBtn.textContent = "🔊 Nhạc";
+      } catch (e) {
+        musicOn = false;
+        musicBtn.textContent = "🔇 Nhạc";
+      }
+    }
+
+    window.addEventListener('load', tryPlayMusic);
+
+    document.addEventListener('pointerdown', () => {
+      if (!musicOn) tryPlayMusic();
+    }, { once: true });
+
+    musicBtn.addEventListener('click', async () => {
+      if (!musicOn) {
+        await tryPlayMusic();
+      } else {
+        bgm.pause();
+        musicOn = false;
+        musicBtn.textContent = "🔇 Nhạc";
+      }
+    });
+
+    /***********************
+     * 🎉 CONFETTI (BIG but only ~2s, anti-lag)
+     ***********************/
+    const fxCanvas = document.getElementById('fxCanvas');
+    const myConfetti = confetti.create(fxCanvas, { resize: true, useWorker: true });
+
+    // Bắn to nhưng theo "nhịp" (không spam mỗi frame) => đỡ lag
+    function fireworksDown2sBig() {
+      const total = 6000;     // đúng 2s
+      const interval = 330;   // ~6 nhịp trong 2s
+      const steps = Math.ceil(total / interval);
+      let i = 0;
+
+      const timer = setInterval(() => {
+        i++;
+
+        // 2 góc trên
+        myConfetti({
+          particleCount: 70,
+          startVelocity: 45,
+          spread: 75,
+          gravity: 1.15,
+          scalar: 1.18,
+          ticks: 240,
+          origin: { x: 0.12, y: 0 }
+        });
+        myConfetti({
+          particleCount: 70,
+          startVelocity: 45,
+          spread: 75,
+          gravity: 1.15,
+          scalar: 1.18,
+          ticks: 240,
+          origin: { x: 0.88, y: 0 }
+        });
+
+        // thỉnh thoảng bắn thêm ở giữa (2/6 nhịp) cho đã mà vẫn nhẹ
+        if (i === 2 || i === 4) {
+          myConfetti({
+            particleCount: 110,
+            startVelocity: 52,
+            spread: 85,
+            gravity: 1.05,
+            scalar: 1.22,
+            ticks: 260,
+            origin: { x: 0.5, y: 0.02 }
+          });
+        }
+
+        if (i >= steps) clearInterval(timer);
+      }, interval);
+    }
+
+    /***********************
+     * ✅ SUCCESS MODAL
+     ***********************/
+    const successModal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const writeMoreBtn = document.getElementById('writeMoreBtn');
+
+    function openSuccessModal(){
+      successModal.classList.add('show');
+    }
+    function closeSuccessModal(){
+      successModal.classList.remove('show');
+    }
+
+    successModal.addEventListener('click', (e) => {
+      if (e.target === successModal) closeSuccessModal();
+    });
+    closeModalBtn.addEventListener('click', closeSuccessModal);
+
+    writeMoreBtn.addEventListener('click', () => {
+      closeSuccessModal();
+      const msg = document.getElementById('message');
+      if (msg) msg.focus();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSuccessModal();
+    });
   </script>
+
 </body>
 </html>
